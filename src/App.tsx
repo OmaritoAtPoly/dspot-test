@@ -1,14 +1,11 @@
-import React from 'react';
-import './App.css';
-import cardPackages from './containers/cardPackages';
-import givenCards from './utils/givenCards';
+import React from "react";
+import "./App.css";
+import Routes from "./routes/Routes";
 
 const App = () => (
   <div className="App">
-    <p>
-      react test
-    </p>
+    <Routes />
   </div>
-)
+);
 
 export default App;
