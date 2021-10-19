@@ -1,10 +1,4 @@
-import React from "react";
-import givenCards from "../utils/givenCards";
-
-type Cards = {
-  suit: string;
-  value: string | number;
-};
+import { Cards } from "../utils/types.d";
 
 const cardPackages = (cards: Cards[]) => {
   const cardSet = new Map();

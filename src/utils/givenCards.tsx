@@ -1,4 +1,4 @@
-export default [
+export const givenCards = [
     {
       suit: "hearts",
       value: 2,
