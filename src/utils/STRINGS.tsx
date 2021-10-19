@@ -15,6 +15,10 @@ const STRINGS = {
     BAD_ARRAY: "Enter a valid number sequence",
     ALLOWED_VALUES: "123456789",
   },
+  yup: {
+    QUEUE_RANGE: "queue length should be between 1-9",
+    REQUIRED: "Value required"
+  },
 };
 
 export default STRINGS;
