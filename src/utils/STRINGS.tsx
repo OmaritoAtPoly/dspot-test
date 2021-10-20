@@ -18,7 +18,8 @@ const STRINGS = {
     EDIT: "Edit this queue",
     DELETE: "Delete this queue",
     WARNING_DELETE: "Do you want to delete this queue record_?",
-    WARNING_EDIT: "Here is you queue record",
+    WARNING_EDIT: "Here is you queue record: ",
+    CURRENT_SOLUTION:"Current Solution: ", 
   },
   yup: {
     QUEUE_RANGE: "queue length should be between 1-9",

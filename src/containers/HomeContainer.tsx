@@ -5,23 +5,38 @@ import { useColumns } from "../hooks/useColumns";
 import STRINGS from "../utils/STRINGS";
 import Modal from "../components/modal/Modal";
 import AuxillaryContentComponent from "../components/modal/AuxillaryContentComponent";
-import { sequentialArrayValidator, sortArray } from "../utils/funcionalities";
+import {
+  queueProblemSolution,
+  sequentialArrayValidator,
+  sortArray,
+} from "../utils/functionalities";
 
 const HomeContainer = () => {
-  const {
-    queueData,
-    handleQueuesValue,
-  } = useContext(QueueAppContext);
+  const { queueData, handleQueuesValue } = useContext(QueueAppContext);
 
-  const [queueIdToHandle, setQueueIdToHandle] = useState<string>();
+  const [currentQueueIdToHandle, setCurrentQueueIdToHandle] =
+    useState<string>();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
-  const [queueLength, setQueueLength] = useState<number>(); 
-  const [queueDashNotationValue, setQueueDashNotationValue] = useState<string>(); 
+  const [queueLength, setQueueLength] = useState<number>();
+  const [queueDashNotationValue, setQueueDashNotationValue] =
+    useState<string>();
   const [sequentialTruthy, setSequentialTruthy] = useState<string>("");
 
-  const handleQueuesLength = useCallback((val: number) => setQueueLength(val), [setQueueLength]);
-  const handleQueueDashNotationValue = useCallback((val: string) => setQueueDashNotationValue(val), [setQueueDashNotationValue]);
+  const currentQueueValueMemoized = useMemo(
+    () => queueData.find((a) => a.id === currentQueueIdToHandle),
+    [currentQueueIdToHandle, queueData]
+  );
+
+  const handleQueuesLength = useCallback(
+    (val: number) => setQueueLength(val),
+    [setQueueLength]
+  );
+
+  const handleQueueDashNotationValue = useCallback(
+    (val: string) => setQueueDashNotationValue(val),
+    [setQueueDashNotationValue]
+  );
 
   const handleDeleteModalOpen = useCallback(
     () => setIsDeleteModalOpen(!isDeleteModalOpen),
@@ -40,14 +55,21 @@ const HomeContainer = () => {
   }, [isEditModalOpen, setIsEditModalOpen]);
 
   const handleDeleteQueue = useCallback(() => {
-    const queueToDelete = queueData.filter((a) => a.id !== queueIdToHandle);
+    const queueToDelete = queueData.filter(
+      (a) => a.id !== currentQueueIdToHandle
+    );
     handleQueuesValue(queueToDelete);
     handleDeleteModalOpen();
-  }, [queueData, handleQueuesValue, queueIdToHandle, handleDeleteModalOpen]);
+  }, [
+    queueData,
+    handleQueuesValue,
+    currentQueueIdToHandle,
+    handleDeleteModalOpen,
+  ]);
 
   const onDelete = useCallback(
     (id: string) => () => {
-      setQueueIdToHandle(id);
+      setCurrentQueueIdToHandle(id);
       const queueWithDothNotation = queueData
         .find((a) => a.id === id)
         ?.queueArray.join(" - ");
@@ -61,7 +83,7 @@ const HomeContainer = () => {
 
   const onEdit = useCallback(
     (id: string) => () => {
-      setQueueIdToHandle(id);
+      setCurrentQueueIdToHandle(id);
       handleEditModalOpen();
       const queueToShow = queueData.find((a) => a.id === id);
       if (queueToShow && queueToShow?.queueArray.length) {
@@ -71,10 +93,10 @@ const HomeContainer = () => {
     },
     [
       queueData,
-      setQueueIdToHandle,
+      setCurrentQueueIdToHandle,
       handleEditModalOpen,
       handleQueuesLength,
-      handleQueueDashNotationValue
+      handleQueueDashNotationValue,
     ]
   );
 
@@ -99,12 +121,32 @@ const HomeContainer = () => {
       if (
         newNumbersArray.length === sequentialArrayValidator(orderedArray).length
       ) {
+        const newQueueDataCopy = [...queueData];
+        const queueIndex = queueData.findIndex(
+          (a) => a.id === currentQueueIdToHandle
+        );
+        const solution = queueProblemSolution(newNumbersArray);
+
+        newQueueDataCopy[queueIndex] = {
+          ...newQueueDataCopy[queueIndex],
+          queueArray: newNumbersArray,
+          currentQueueSolution: solution,
+        };
+
+        handleQueuesValue(newQueueDataCopy);
+        handleEditModalOpen();
         handleSequentialTruthyLabel("true");
       } else {
         handleSequentialTruthyLabel("false");
       }
     },
-    [handleSequentialTruthyLabel]
+    [
+      handleSequentialTruthyLabel,
+      queueData,
+      handleQueuesValue,
+      handleEditModalOpen,
+      currentQueueIdToHandle,
+    ]
   );
 
   return (
@@ -127,8 +169,8 @@ const HomeContainer = () => {
           withButtonElements={false}
           acceptFn={handleDeleteQueue}
           cancelFn={handleEditModalOpen}
-          modalTitle={STRINGS.queue.WARNING_EDIT}
-          modalContent={queueDashNotationValue}
+          modalTitle={`${STRINGS.queue.WARNING_EDIT} ${queueDashNotationValue}`}
+          modalContent={`${STRINGS.queue.CURRENT_SOLUTION} ${currentQueueValueMemoized?.currentQueueSolution}`}
           queueLength={queueLength}
           sequentialTruthy={sequentialTruthy}
           onCompleteQueue={onCompleteQueue}

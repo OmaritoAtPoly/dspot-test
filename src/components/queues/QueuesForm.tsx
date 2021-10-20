@@ -64,7 +64,7 @@ interface Props {
   modalVisibility: boolean;
   sequentialArray: string;
   queueDashNotationValue?: string;
-  problemAnswer?: string;
+  problemSolution: string | number
   handleFormValues: (val: { queueInputValue: number }) => void;
   onCompleteQueue: (val: string) => void;
   handleModalVisibility: () => void;
@@ -76,12 +76,12 @@ const QueuesForm = ({
   modalVisibility,
   queueDashNotationValue,
   sequentialArray,
-  problemAnswer,
   handleFormValues,
   onCompleteQueue,
   handleModalVisibility,
   handleAddNewQueueRecord,
   resetQueueLength,
+  problemSolution,
 }: Props) => {
   const classes = styles();
 
@@ -158,7 +158,7 @@ const QueuesForm = ({
             cancelFn={handleModalVisibility}
             acceptFn={handleAddNewQueueRecord}
             modalTitle={queueDashNotationValue}
-            modalContent={problemAnswer}
+            modalContent={`${STRINGS.queue.CURRENT_SOLUTION} ${problemSolution}`}
           />
         </Modal>
       </div>
