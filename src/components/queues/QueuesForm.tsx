@@ -11,7 +11,7 @@ import React from "react";
 import PinField from "react-pin-field";
 import STRINGS from "../../utils/STRINGS";
 import Modal from "../modal/Modal";
-import QueueModalContent from "../modal/QueueModalContent";
+import AuxillaryContentComponent from "../modal/AuxillaryContentComponent";
 import queuesValidationSchema from "./queuesValidationSchema";
 import DeleteIcon from "@material-ui/icons/Delete";
 
@@ -154,7 +154,7 @@ const QueuesForm = ({
           <Typography>{STRINGS.queue.SET_LENGTH}</Typography>
         )}
         <Modal open={modalVisibility} handleOpen={handleModalVisibility}>
-          <QueueModalContent
+          <AuxillaryContentComponent
             cancelFn={handleModalVisibility}
             acceptFn={handleAddNewQueueRecord}
             modalTitle={queueValue}

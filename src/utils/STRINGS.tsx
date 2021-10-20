@@ -17,6 +17,7 @@ const STRINGS = {
     NO_DATA: "There is not data to show",
     EDIT: "Edit this queue",
     DELETE: "Delete this queue",
+    WARNING_DELETE: "Do you want to delete this queue record_?",
   },
   yup: {
     QUEUE_RANGE: "queue length should be between 1-9",
