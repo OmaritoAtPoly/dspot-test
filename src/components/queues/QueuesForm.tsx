@@ -11,7 +11,7 @@ import React from "react";
 import PinField from "react-pin-field";
 import STRINGS from "../../utils/STRINGS";
 import Modal from "../modal/Modal";
-import QueueModalContent from "../modal/QueueModalContent";
+import AuxillaryContentComponent from "../modal/AuxillaryContentComponent";
 import queuesValidationSchema from "./queuesValidationSchema";
 import DeleteIcon from "@material-ui/icons/Delete";
 
@@ -63,8 +63,8 @@ interface Props {
   queueLength: number;
   modalVisibility: boolean;
   sequentialArray: string;
-  queueValue?: string;
-  problemAnswer?: string;
+  queueDashNotationValue?: string;
+  problemSolution: string | number
   handleFormValues: (val: { queueInputValue: number }) => void;
   onCompleteQueue: (val: string) => void;
   handleModalVisibility: () => void;
@@ -74,14 +74,14 @@ interface Props {
 const QueuesForm = ({
   queueLength,
   modalVisibility,
-  queueValue,
+  queueDashNotationValue,
   sequentialArray,
-  problemAnswer,
   handleFormValues,
   onCompleteQueue,
   handleModalVisibility,
   handleAddNewQueueRecord,
   resetQueueLength,
+  problemSolution,
 }: Props) => {
   const classes = styles();
 
@@ -95,7 +95,7 @@ const QueuesForm = ({
     },
   });
 
-  const eraseQueueLength = () => {
+  const eraseQueue = () => {
     resetQueueLength(0)
     setFieldValue("queueInputValue", 0, true);
   };
@@ -133,7 +133,7 @@ const QueuesForm = ({
         {queueLength > 0 ? (
           <div>
             <span className={classes.pinWrapperStyle}>
-              <IconButton onClick={eraseQueueLength}>
+              <IconButton onClick={eraseQueue}>
                 <DeleteIcon className={classes.eraseIconStyle} />
               </IconButton>
               <PinField
@@ -154,11 +154,11 @@ const QueuesForm = ({
           <Typography>{STRINGS.queue.SET_LENGTH}</Typography>
         )}
         <Modal open={modalVisibility} handleOpen={handleModalVisibility}>
-          <QueueModalContent
+          <AuxillaryContentComponent
             cancelFn={handleModalVisibility}
             acceptFn={handleAddNewQueueRecord}
-            modalTitle={queueValue}
-            modalContent={problemAnswer}
+            modalTitle={queueDashNotationValue}
+            modalContent={`${STRINGS.queue.CURRENT_SOLUTION} ${problemSolution}`}
           />
         </Modal>
       </div>

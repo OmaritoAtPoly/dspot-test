@@ -14,10 +14,21 @@ const STRINGS = {
     SET_LENGTH: "Set a valid length to process",
     BAD_ARRAY: "Enter a valid number sequence",
     ALLOWED_VALUES: "123456789",
+    NO_DATA: "There is not data to show",
+    EDIT: "Edit this queue",
+    DELETE: "Delete this queue",
+    WARNING_DELETE: "Do you want to delete this queue record_?",
+    WARNING_EDIT: "Here is you queue record: ",
+    CURRENT_SOLUTION:"Current Solution: ", 
   },
   yup: {
     QUEUE_RANGE: "queue length should be between 1-9",
-    REQUIRED: "Value required"
+    REQUIRED: "Value required",
+  },
+  table: {
+    QUEUE_ARRAY: "Queue Order",
+    CREATED_AT: "Queue Event Date",
+    QUEUE_BRIBES: "Bribes in Queue",
   },
 };
 

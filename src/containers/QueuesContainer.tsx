@@ -1,19 +1,63 @@
-import React, { useCallback, useState } from "react";
+import moment from "moment";
+import { nanoid } from "nanoid";
+import React, { useCallback, useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { QueueAppContext } from "../App";
 import QueuesForm from "../components/queues/QueuesForm";
-import { sequentialArrayValidator, sortArray } from "../utils/funcionalities";
+import {
+  queueProblemSolution,
+  sequentialArrayValidator,
+  sortArray
+} from "../utils/functionalities";
 
 const QueuesContainer = () => {
-  const [queueLength, setQueueLength] = useState<number>(0);
   const [modalVisibility, setModalVisibility] = useState<boolean>(false);
-  const [queueValue, setQueueValue] = useState<string | undefined>();
-  const [sequentialArray, setSequential] = useState<string>("");
+  const [queueLength, setQueueLength] = useState<number>(0);
+  const [queueDashNotationValue, setQueueDashNotationValue] =
+    useState<string>();
+  const [queueArrayValue, setQueueArrayValue] = useState<number[]>([0]);
+  const [sequentialTruthy, setSequentialTruthy] = useState<string>("");
+  const [problemSolution, setProblemSolution] = useState<string | number>("");
 
   const { push } = useHistory();
+  const { queueData, handleQueuesValue } = useContext(QueueAppContext);
+
+  const handleQueuesLength = useCallback(
+    (val: number) => setQueueLength(val),
+    [setQueueLength]
+  );
+
+  const handleQueueDashNotationValue = useCallback(
+    (val: string) => setQueueDashNotationValue(val),
+    [setQueueDashNotationValue]
+  );
+
+  const handleQueueArrayValue = useCallback(
+    (val: number[]) => {
+      setQueueArrayValue(val);
+    },
+    [setQueueArrayValue]
+  );
+
+  const handleSequentialTruthyLabel = useCallback(
+    (val: string) => {
+      setSequentialTruthy(val);
+    },
+    [setSequentialTruthy]
+  );
 
   const handleAddNewQueueRecord = useCallback(() => {
+    const newPreparedQueueValue = {
+      id: nanoid(4),
+      createdAt: moment().format("hh:mm:s A").toString(),
+      queueArray: queueArrayValue,
+      currentQueueSolution: queueProblemSolution(queueArrayValue),
+    };
+
+    const newValue = [...queueData, newPreparedQueueValue];
+    handleQueuesValue(newValue);
     push("/");
-  }, [push]);
+  }, [push, queueArrayValue, handleQueuesValue, queueData]);
 
   const handleModalVisibility = useCallback(
     () => setModalVisibility(!modalVisibility),
@@ -22,40 +66,48 @@ const QueuesContainer = () => {
 
   const handleFormValues = useCallback(
     (val: { queueInputValue: number }) => {
-      setQueueLength(val.queueInputValue);
+      handleQueuesLength(val.queueInputValue);
     },
-    [setQueueLength]
+    [handleQueuesLength]
   );
 
   const onCompleteQueue = useCallback(
     (value: string) => {
       const newNumbersArray = value.split("").map((a) => parseInt(a));
       const orderedArray = [...newNumbersArray].sort(sortArray);
-
+      const solution = queueProblemSolution(newNumbersArray);
       if (
         newNumbersArray.length === sequentialArrayValidator(orderedArray).length
       ) {
-        setSequential("true");
-        setQueueValue(value.split("").join(" - "));
+        handleSequentialTruthyLabel("true");
+        handleQueueDashNotationValue(value.split("").join(" - "));
+        handleQueueArrayValue(newNumbersArray);
         handleModalVisibility();
+        setProblemSolution(solution);
       } else {
-        setSequential("false");
+        handleSequentialTruthyLabel("false");
       }
     },
-    [handleModalVisibility, setQueueValue]
+    [
+      handleModalVisibility,
+      handleQueueDashNotationValue,
+      handleQueueArrayValue,
+      handleSequentialTruthyLabel,
+    ]
   );
 
   return (
     <QueuesForm
       queueLength={queueLength}
       modalVisibility={modalVisibility}
-      queueValue={queueValue}
-      sequentialArray={sequentialArray}
-      resetQueueLength={setQueueLength}
+      queueDashNotationValue={queueDashNotationValue}
+      sequentialArray={sequentialTruthy}
+      resetQueueLength={handleQueuesLength}
       handleFormValues={handleFormValues}
       onCompleteQueue={onCompleteQueue}
       handleModalVisibility={handleModalVisibility}
       handleAddNewQueueRecord={handleAddNewQueueRecord}
+      problemSolution={problemSolution}
     />
   );
 };

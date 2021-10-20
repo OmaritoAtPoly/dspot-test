@@ -4,8 +4,8 @@ export type Cards = {
   };
 
   export type QueueElementsType = {
-      queueId: string,
+      id: string,
       createdAt: string,
       queueArray: number[],
-      currentQueueSolution: number | string;
+      currentQueueSolution: number | string,
   }
