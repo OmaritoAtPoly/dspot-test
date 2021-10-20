@@ -1,6 +1,11 @@
-import React, { useCallback, useState } from "react";
+import moment from "moment";
+import { nanoid } from "nanoid";
+import React, { useCallback, useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { QueueAppContext } from "../App";
+// import { queuesElements } from "../appStore/store";
 import QueuesForm from "../components/queues/QueuesForm";
+import { useQueueProblemSolution } from "../hooks/useQueueProblemSolution";
 import { sequentialArrayValidator, sortArray } from "../utils/funcionalities";
 
 const QueuesContainer = () => {
@@ -8,12 +13,28 @@ const QueuesContainer = () => {
   const [modalVisibility, setModalVisibility] = useState<boolean>(false);
   const [queueValue, setQueueValue] = useState<string | undefined>();
   const [sequentialArray, setSequential] = useState<string>("");
+  const [queueArrayValue, setQueueArrayValue] = useState<number[]>([0]);
 
   const { push } = useHistory();
+  const {queueData, handleQueuesValue} = useContext(QueueAppContext); 
+
+  const problemAnswer = useQueueProblemSolution();
 
   const handleAddNewQueueRecord = useCallback(() => {
+    
+    const newPreparedQueueValue = {
+      id: nanoid(4),
+      createdAt: moment().format("hh:mm:s A").toString(),
+      currentQueueSolution: problemAnswer,
+      queueArray: queueArrayValue,
+    };
+    
+    const newValue = [...queueData, newPreparedQueueValue];
+    handleQueuesValue(newValue);
+    
     push("/");
-  }, [push]);
+    
+  }, [push, problemAnswer, queueArrayValue, handleQueuesValue, queueData]);
 
   const handleModalVisibility = useCallback(
     () => setModalVisibility(!modalVisibility),
@@ -37,6 +58,7 @@ const QueuesContainer = () => {
       ) {
         setSequential("true");
         setQueueValue(value.split("").join(" - "));
+        setQueueArrayValue(newNumbersArray);
         handleModalVisibility();
       } else {
         setSequential("false");
