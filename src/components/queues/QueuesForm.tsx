@@ -63,7 +63,7 @@ interface Props {
   queueLength: number;
   modalVisibility: boolean;
   sequentialArray: string;
-  queueValue?: string;
+  queueDashNotationValue?: string;
   problemAnswer?: string;
   handleFormValues: (val: { queueInputValue: number }) => void;
   onCompleteQueue: (val: string) => void;
@@ -74,7 +74,7 @@ interface Props {
 const QueuesForm = ({
   queueLength,
   modalVisibility,
-  queueValue,
+  queueDashNotationValue,
   sequentialArray,
   problemAnswer,
   handleFormValues,
@@ -95,7 +95,7 @@ const QueuesForm = ({
     },
   });
 
-  const eraseQueueLength = () => {
+  const eraseQueue = () => {
     resetQueueLength(0)
     setFieldValue("queueInputValue", 0, true);
   };
@@ -133,7 +133,7 @@ const QueuesForm = ({
         {queueLength > 0 ? (
           <div>
             <span className={classes.pinWrapperStyle}>
-              <IconButton onClick={eraseQueueLength}>
+              <IconButton onClick={eraseQueue}>
                 <DeleteIcon className={classes.eraseIconStyle} />
               </IconButton>
               <PinField
@@ -157,7 +157,7 @@ const QueuesForm = ({
           <AuxillaryContentComponent
             cancelFn={handleModalVisibility}
             acceptFn={handleAddNewQueueRecord}
-            modalTitle={queueValue}
+            modalTitle={queueDashNotationValue}
             modalContent={problemAnswer}
           />
         </Modal>
