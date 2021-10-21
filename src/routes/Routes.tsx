@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 
 const Home = lazy(() => import("../pages/HomePage"));
 const Queues = lazy(() => import("../pages/QueuesPage"));
+const Cards = lazy(() => import("../pages/CardsPage"));
 const NotFound = lazy(() => import("../pages/NotFoundPage"));
 
 const Routes = () => (
@@ -22,6 +23,9 @@ const Routes = () => (
         </Route>
         <Route exact path="/queues">
           <Queues />
+        </Route>
+        <Route exact path="/cards">
+          <Cards />
         </Route>
         <Route>
           <NotFound />
