@@ -19,6 +19,8 @@ const QueuesContainer = () => {
   const [sequentialTruthy, setSequentialTruthy] = useState<string>("");
   const [problemSolution, setProblemSolution] = useState<string | number>("");
 
+  const handleProblemSolution = useCallback((val: number | string) => setProblemSolution(val), [setProblemSolution]);
+
   const { push } = useHistory();
   const { queueData, handleQueuesValue } = useContext(QueueAppContext);
 
@@ -51,13 +53,13 @@ const QueuesContainer = () => {
       id: nanoid(4),
       createdAt: moment().format("hh:mm:s A").toString(),
       queueArray: queueArrayValue,
-      currentQueueSolution: queueProblemSolution(queueArrayValue),
+      currentQueueSolution: problemSolution,
     };
 
     const newValue = [...queueData, newPreparedQueueValue];
     handleQueuesValue(newValue);
     push("/");
-  }, [push, queueArrayValue, handleQueuesValue, queueData]);
+  }, [push, queueArrayValue, handleQueuesValue, queueData, problemSolution]);
 
   const handleModalVisibility = useCallback(
     () => setModalVisibility(!modalVisibility),
@@ -83,7 +85,7 @@ const QueuesContainer = () => {
         handleQueueDashNotationValue(value.split("").join(" - "));
         handleQueueArrayValue(newNumbersArray);
         handleModalVisibility();
-        setProblemSolution(solution);
+        handleProblemSolution(solution);
       } else {
         handleSequentialTruthyLabel("false");
       }
@@ -93,6 +95,7 @@ const QueuesContainer = () => {
       handleQueueDashNotationValue,
       handleQueueArrayValue,
       handleSequentialTruthyLabel,
+      handleProblemSolution,
     ]
   );
 
