@@ -45,6 +45,11 @@ const classes = useStyles();
               <Link to="/queues" className={classes.link}>{STRINGS.general.QUEUES}</Link>
             </ListItemText>
           </ListItem>
+          <ListItem onClick={handleOpenDrawer}>
+            <ListItemText>
+              <Link to="/cards" className={classes.link}>{STRINGS.general.CARDS}</Link>
+            </ListItemText>
+          </ListItem>
         </List>
       </Drawer>
       <IconButton onClick={handleOpenDrawer}>

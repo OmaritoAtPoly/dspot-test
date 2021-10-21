@@ -20,12 +20,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   logo: {
     flexGrow: 1,
-    cursor: "pointer",
+    cursor: "default",
   },
   link: {
     textDecoration: "none",
     color: "white",
-    fontSize: "20px",
+    fontSize: theme.spacing(2),
     marginLeft: theme.spacing(20),
     "&:hover": {
       color: "yellow",
@@ -43,7 +43,7 @@ const Navbar = () => {
     <AppBar position="static">
       <CssBaseline />
       <Toolbar>
-        <Typography variant="h4" className={classes.logo}>
+        <Typography variant="h6" className={classes.logo}>
           {STRINGS.general.APP_TITLE} 
         </Typography>
         {isMobile ? (
@@ -55,6 +55,9 @@ const Navbar = () => {
             </Link>
             <Link to="/queues" className={classes.link}>
               {STRINGS.general.QUEUES}
+            </Link>
+            <Link to="/cards" className={classes.link}>
+              {STRINGS.general.CARDS}
             </Link>
           </div>
          )}  
