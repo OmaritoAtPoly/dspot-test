@@ -4,9 +4,9 @@ import CardsForm from "../components/CardsForm";
 import { cardPackages } from "../utils/functionalities";
 
 
-describe("renders Queue Page App", () => {
+describe("renders Cards Page App", () => {
    
-    test("Getting Queue", () => {
+    test("showing  Cards solution", () => {
       render(<CardsForm problemResult={cardPackages(givenCards)} />);
   
       const correctResult = screen.getByText(/2/);
