@@ -1,10 +1,7 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { QueueAppContext } from "../App";
-import Table from "../components/table/Table";
+import HomeForm from "../components/home/HomeForm";
 import { useColumns } from "../hooks/useColumns";
-import STRINGS from "../utils/STRINGS";
-import Modal from "../components/modal/Modal";
-import AuxillaryContentComponent from "../components/modal/AuxillaryContentComponent";
 import {
   queueProblemSolution,
   sequentialArrayValidator,
@@ -151,31 +148,20 @@ const HomeContainer = () => {
 
   return (
     <>
-      <Table
+      <HomeForm
+        queueLength={queueLength}
         columns={columns}
-        data={preparedData}
-        emptyText={STRINGS.queue.NO_DATA}
+        isDeleteModalOpen={isDeleteModalOpen}
+        isEditModalOpen={isEditModalOpen}
+        preparedData={preparedData}
+        queueDashNotationValue={queueDashNotationValue}
+        sequentialTruthy={sequentialTruthy}
+        currentQueueValueMemoized={currentQueueValueMemoized}
+        handleDeleteModalOpen={handleDeleteModalOpen}
+        handleDeleteQueue={handleDeleteQueue}
+        handleEditModalOpen={handleEditModalOpen}
+        onCompleteQueue={onCompleteQueue}
       />
-      <Modal handleOpen={handleDeleteModalOpen} open={isDeleteModalOpen}>
-        <AuxillaryContentComponent
-          acceptFn={handleDeleteQueue}
-          cancelFn={handleDeleteModalOpen}
-          modalTitle={STRINGS.queue.WARNING_DELETE}
-          modalContent={queueDashNotationValue}
-        />
-      </Modal>
-      <Modal handleOpen={handleEditModalOpen} open={isEditModalOpen}>
-        <AuxillaryContentComponent
-          withButtonElements={false}
-          acceptFn={handleDeleteQueue}
-          cancelFn={handleEditModalOpen}
-          modalTitle={`${STRINGS.queue.WARNING_EDIT} ${queueDashNotationValue}`}
-          modalContent={`${STRINGS.queue.CURRENT_SOLUTION} ${currentQueueValueMemoized?.currentQueueSolution}`}
-          queueLength={queueLength}
-          sequentialTruthy={sequentialTruthy}
-          onCompleteQueue={onCompleteQueue}
-        />
-      </Modal>
     </>
   );
 };

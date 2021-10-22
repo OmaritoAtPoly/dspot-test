@@ -27,7 +27,7 @@ const CardsForm = ({problemResult}: Props) => {
     return (
         <>
             <Typography className={classes.link}>
-                According to <Link href={STRINGS.cards.ONLINE_CARDS_SOURCE} target="_blank">this </Link>source, the problem solution is: {problemResult}
+                According to <Link href={STRINGS.cards.ONLINE_CARDS_SOURCE} target="_blank">"THIS" </Link>source, the problem solution is: {problemResult}
             </Typography>
         </>
     );
